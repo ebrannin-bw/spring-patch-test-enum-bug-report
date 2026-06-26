@@ -64,13 +64,14 @@ mvn package -fae
 Expected result for every module:
 
 ```
-Tests run: 6, Failures: 2, Errors: 0, Skipped: 0
+Tests run: 9, Failures: 3, Errors: 0, Skipped: 0
 ```
 
-The two failing tests are `testStatusReplaceName` and `testStatusReplaceAmount`.
-They are written to expect a 2xx response and will remain red until the framework
-is fixed. The four passing tests cover non-enum `test` operations and confirm the
-rest of JSON Patch works correctly.
+The three failing tests are `testStatusReplaceName`, `testStatusReplaceAmount`,
+and `testStatusReplaceStatus` (the same-field case). They are written to expect a
+2xx response and will remain red until the framework is fixed. The six passing
+tests cover non-enum `test` operations and confirm the rest of JSON Patch works
+correctly.
 
 ## Version matrix
 

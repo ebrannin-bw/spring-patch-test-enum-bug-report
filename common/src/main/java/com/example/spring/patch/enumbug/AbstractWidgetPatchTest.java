@@ -29,9 +29,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * TestOperation.perform then calls ObjectUtils.nullSafeEquals(String, Enum),
  * which is always false.
  *
- * Tests 3 and 4 (testStatusReplaceName, testStatusReplaceAmount) demonstrate
- * the bug — they are written to expect success and will fail (red) until the
- * framework is fixed. All other tests pass.
+ * Tests 3, 4, and 7 (testStatusReplaceName, testStatusReplaceAmount,
+ * testStatusReplaceStatus) demonstrate the bug — they are written to expect
+ * success and will fail (red) until the framework is fixed. All other tests pass.
  */
 @SpringBootTest
 public abstract class AbstractWidgetPatchTest {
@@ -138,6 +138,48 @@ public abstract class AbstractWidgetPatchTest {
     void testNameReplaceStatus() throws Exception {
         var patchJson = Json.createPatchBuilder()
                 .test("/name", "Widget One")
+                .replace("/status", "SUCCESS")
+                .build().toJsonArray().toString();
+        log.info("Patch: {}", patchJson);
+        doPatch(patchJson);
+        var after = widgetRepo.findById(saved.getId()).orElseThrow();
+        log.info("After:  id={} name={} amount={} status={}", after.getId(), after.getName(), after.getAmount(), after.getStatus());
+        assertThat(after.getStatus()).isEqualTo(JobStatus.SUCCESS);
+    }
+
+    // ── Same field: test A, replace A ────────────────────────────────────────
+
+    @Test
+    void testNameReplaceName() throws Exception {
+        var patchJson = Json.createPatchBuilder()
+                .test("/name", "Widget One")
+                .replace("/name", "Updated Widget")
+                .build().toJsonArray().toString();
+        log.info("Patch: {}", patchJson);
+        doPatch(patchJson);
+        var after = widgetRepo.findById(saved.getId()).orElseThrow();
+        log.info("After:  id={} name={} amount={} status={}", after.getId(), after.getName(), after.getAmount(), after.getStatus());
+        assertThat(after.getName()).isEqualTo("Updated Widget");
+    }
+
+    @Test
+    void testAmountReplaceAmount() throws Exception {
+        var patchJson = Json.createPatchBuilder()
+                .test("/amount", 42)
+                .replace("/amount", 99)
+                .build().toJsonArray().toString();
+        log.info("Patch: {}", patchJson);
+        doPatch(patchJson);
+        var after = widgetRepo.findById(saved.getId()).orElseThrow();
+        log.info("After:  id={} name={} amount={} status={}", after.getId(), after.getName(), after.getAmount(), after.getStatus());
+        assertThat(after.getAmount()).isEqualTo(99);
+    }
+
+    @Test
+    // BUG: expects 2xx, gets 400 — PatchException: Test against path '/status' failed
+    void testStatusReplaceStatus() throws Exception {
+        var patchJson = Json.createPatchBuilder()
+                .test("/status", "NEW")
                 .replace("/status", "SUCCESS")
                 .build().toJsonArray().toString();
         log.info("Patch: {}", patchJson);
