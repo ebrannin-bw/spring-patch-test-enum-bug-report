@@ -40,8 +40,8 @@ cannot be replaced via the context.
 
 ```
 common/             Shared entity, repository, and abstract test class
-spring-boot-40/     Runs the test suite against Spring Boot 4.0.x (SDR 5.0.x / Jackson 3.x)
 spring-boot-41/     Runs the test suite against Spring Boot 4.1.x
+spring-boot-40/     Runs the test suite against Spring Boot 4.0.x (SDR 5.0.x / Jackson 3.x)
 spring-boot-35/     Spring Boot 3.5.x — confirms bug is not a 4.x regression
 spring-boot-34/     Spring Boot 3.4.x
 spring-boot-33/     Spring Boot 3.3.x
@@ -77,8 +77,8 @@ correctly.
 
 | Module | Spring Boot | Spring Data REST | Jackson |
 |---|---|---|---|
-| spring-boot-40 | 4.0.7  | 5.0.x | 3.x (`tools.jackson`) |
 | spring-boot-41 | 4.1.0  | 5.1.x | 3.x (`tools.jackson`) |
+| spring-boot-40 | 4.0.7  | 5.0.x | 3.x (`tools.jackson`) |
 | spring-boot-35 | 3.5.15 | 4.5.x | 2.x |
 | spring-boot-34 | 3.4.13 | 4.4.x | 2.x |
 | spring-boot-33 | 3.3.13 | 4.3.x | 2.x |
