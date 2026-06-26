@@ -72,10 +72,6 @@ They are written to expect a 2xx response and will remain red until the framewor
 is fixed. The four passing tests cover non-enum `test` operations and confirm the
 rest of JSON Patch works correctly.
 
-> **Note:** must be run from inside this directory. The project uses
-> `.mvn/settings.xml` to override Maven mirrors and resolve dependencies from
-> Maven Central directly.
-
 ## Version matrix
 
 | Module | Spring Boot | Spring Data REST | Jackson |
