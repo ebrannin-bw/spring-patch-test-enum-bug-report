@@ -15,51 +15,29 @@
     <groupId>com.example</groupId>
     <artifactId>spring-patch-enum-bug-report</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <name>spring-patch-enum-bug-report</name>
     <description>
         Bug report: Spring Data REST JSON Patch `test` operation fails for enum fields.
         JsonPatchPatchConverter.valueFromJsonNode returns a raw String for textual JSON nodes,
         but SpelPath.getValue returns the actual enum constant. ObjectUtils.nullSafeEquals(String, Enum)
         is always false, so the test operation always fails when the field is an enum.
+        Add a module per Spring Boot version to test against multiple versions.
     </description>
 
     <properties>
-        <java.version>17</java.version>
+        <java.version>21</java.version>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-rest</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish</groupId>
-            <artifactId>jakarta.json</artifactId>
-            <version>2.0.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+    <modules>
+        <module>common</module>
+        <module>spring-boot-30</module>
+        <module>spring-boot-31</module>
+        <module>spring-boot-32</module>
+        <module>spring-boot-33</module>
+        <module>spring-boot-34</module>
+        <module>spring-boot-35</module>
+        <module>spring-boot-40</module>
+        <module>spring-boot-41</module>
+    </modules>
 </project>
