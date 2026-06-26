@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.lang.NonNull;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.nio.charset.StandardCharsets;
 
@@ -174,11 +175,17 @@ public abstract class AbstractWidgetPatchTest {
     private void doPatch(String patchJson) throws Exception {
         String uri = "/widgets/" + saved.getId();
         byte[] body = patchJson.getBytes(StandardCharsets.UTF_8);
-        mvc.perform(ctx -> {
+        MvcResult result = mvc.perform(ctx -> {
             MockHttpServletRequest req = new MockHttpServletRequest("PATCH", uri);
             req.setContentType("application/json-patch+json");
             req.setContent(body);
             return req;
-        }).andExpect(status().is2xxSuccessful());
+        }).andReturn();
+        if (result.getResolvedException() != null) {
+            log.error("Controller exception", result.getResolvedException());
+        }
+        assertThat(result.getResponse().getStatus())
+                .as("PATCH %s", uri)
+                .isBetween(200, 299);
     }
 }
