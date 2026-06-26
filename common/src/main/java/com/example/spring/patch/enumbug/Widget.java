@@ -2,8 +2,16 @@
 package com.example.spring.patch.enumbug;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
+@Data
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Widget {
 
     @Id
@@ -17,35 +25,6 @@ public class Widget {
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "varchar(255)")
     private JobStatus status;
-
-    public Widget() {}
-
-    private Widget(Builder b) {
-        this.name = b.name;
-        this.amount = b.amount;
-        this.status = b.status;
-    }
-
-    public static Builder builder() { return new Builder(); }
-
-    public Long getId() { return id; }
-    public String getName() { return name; }
-    public Integer getAmount() { return amount; }
-    public JobStatus getStatus() { return status; }
-    public void setName(String name) { this.name = name; }
-    public void setAmount(Integer amount) { this.amount = amount; }
-    public void setStatus(JobStatus status) { this.status = status; }
-
-    public static class Builder {
-        private String name;
-        private Integer amount;
-        private JobStatus status;
-
-        public Builder name(String name) { this.name = name; return this; }
-        public Builder amount(Integer amount) { this.amount = amount; return this; }
-        public Builder status(JobStatus status) { this.status = status; return this; }
-        public Widget build() { return new Widget(this); }
-    }
 
     @Override
     public String toString() {
