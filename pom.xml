@@ -12,11 +12,11 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.example</groupId>
-    <artifactId>spring-patch-enum-bug-report</artifactId>
+    <groupId>com.example.spring-patch-enum-bug-report</groupId>
+    <artifactId>root</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>spring-patch-enum-bug-report</name>
+    <name>root</name>
     <description>
         Bug report: Spring Data REST JSON Patch `test` operation fails for enum fields.
         JsonPatchPatchConverter.valueFromJsonNode returns a raw String for textual JSON nodes,

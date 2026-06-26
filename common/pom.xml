@@ -6,13 +6,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.example</groupId>
-        <artifactId>spring-patch-enum-bug-report</artifactId>
+        <groupId>com.example.spring-patch-enum-bug-report</groupId>
+        <artifactId>root</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>spring-patch-enum-bug-report-common</artifactId>
-    <name>spring-patch-enum-bug-report-common</name>
+    <artifactId>common</artifactId>
+    <name>common</name>
     <description>
         Version-agnostic domain objects and shared test logic.
         AbstractWidgetPatchTest lives in src/main/java so version modules can extend it.

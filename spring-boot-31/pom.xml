@@ -12,10 +12,10 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.example</groupId>
-    <artifactId>spring-patch-enum-bug-report-spring-boot-31</artifactId>
+    <groupId>com.example.spring-patch-enum-bug-report</groupId>
+    <artifactId>spring-boot-31</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>spring-patch-enum-bug-report-spring-boot-31</name>
+    <name>spring-boot-31</name>
     <description>Runs the shared test suite against Spring Boot 3.1.x</description>
 
     <properties>
@@ -24,8 +24,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.example</groupId>
-            <artifactId>spring-patch-enum-bug-report-common</artifactId>
+            <groupId>com.example.spring-patch-enum-bug-report</groupId>
+            <artifactId>common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
