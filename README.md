@@ -42,12 +42,12 @@ cannot be replaced via the context.
 common/             Shared entity, repository, and abstract test class
 spring-boot-40/     Runs the test suite against Spring Boot 4.0.x (SDR 5.0.x / Jackson 3.x)
 spring-boot-41/     Runs the test suite against Spring Boot 4.1.x
-spring-boot-30/     Spring Boot 3.0.x — confirms bug is not a 4.x regression
-spring-boot-31/     Spring Boot 3.1.x
-spring-boot-32/     Spring Boot 3.2.x
-spring-boot-33/     Spring Boot 3.3.x
+spring-boot-35/     Spring Boot 3.5.x — confirms bug is not a 4.x regression
 spring-boot-34/     Spring Boot 3.4.x
-spring-boot-35/     Spring Boot 3.5.x
+spring-boot-33/     Spring Boot 3.3.x
+spring-boot-32/     Spring Boot 3.2.x
+spring-boot-31/     Spring Boot 3.1.x
+spring-boot-30/     Spring Boot 3.0.x
 ```
 
 Each version module declares `spring-boot-starter-parent` as its own Maven
