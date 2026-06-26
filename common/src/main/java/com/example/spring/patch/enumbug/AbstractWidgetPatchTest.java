@@ -2,13 +2,16 @@
 package com.example.spring.patch.enumbug;
 
 import jakarta.json.Json;
+import jakarta.json.JsonPatchBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.lang.NonNull;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -44,6 +47,9 @@ public abstract class AbstractWidgetPatchTest {
     @Autowired
     WidgetRepository widgetRepo;
 
+    @Autowired
+    ObjectMapper objectMapper;
+
     Widget saved;
 
     @BeforeEach
@@ -55,7 +61,6 @@ public abstract class AbstractWidgetPatchTest {
                 .status(JobStatus.NEW)
                 .build()
         );
-        log.info("Before: id={} name={} amount={} status={}", saved.getId(), saved.getName(), saved.getAmount(), saved.getStatus());
     }
 
     @AfterEach
@@ -69,12 +74,8 @@ public abstract class AbstractWidgetPatchTest {
     void testNameReplaceAmount() throws Exception {
         var patchJson = Json.createPatchBuilder()
                 .test("/name", "Widget One")
-                .replace("/amount", 99)
-                .build().toJsonArray().toString();
-        log.info("Patch: {}", patchJson);
-        doPatch(patchJson);
-        var after = widgetRepo.findById(saved.getId()).orElseThrow();
-        log.info("After:  id={} name={} amount={} status={}", after.getId(), after.getName(), after.getAmount(), after.getStatus());
+                .replace("/amount", 99);
+        var after = doPatchAndGet(patchJson);
         assertThat(after.getAmount()).isEqualTo(99);
     }
 
@@ -82,12 +83,8 @@ public abstract class AbstractWidgetPatchTest {
     void testAmountReplaceStatus() throws Exception {
         var patchJson = Json.createPatchBuilder()
                 .test("/amount", 42)
-                .replace("/status", "SUCCESS")
-                .build().toJsonArray().toString();
-        log.info("Patch: {}", patchJson);
-        doPatch(patchJson);
-        var after = widgetRepo.findById(saved.getId()).orElseThrow();
-        log.info("After:  id={} name={} amount={} status={}", after.getId(), after.getName(), after.getAmount(), after.getStatus());
+                .replace("/status", "SUCCESS");
+        var after = doPatchAndGet(patchJson);
         assertThat(after.getStatus()).isEqualTo(JobStatus.SUCCESS);
     }
 
@@ -96,12 +93,8 @@ public abstract class AbstractWidgetPatchTest {
     void testStatusReplaceName() throws Exception {
         var patchJson = Json.createPatchBuilder()
                 .test("/status", "NEW")
-                .replace("/name", "Updated Widget")
-                .build().toJsonArray().toString();
-        log.info("Patch: {}", patchJson);
-        doPatch(patchJson);
-        var after = widgetRepo.findById(saved.getId()).orElseThrow();
-        log.info("After:  id={} name={} amount={} status={}", after.getId(), after.getName(), after.getAmount(), after.getStatus());
+                .replace("/name", "Updated Widget");
+        var after = doPatchAndGet(patchJson);
         assertThat(after.getName()).isEqualTo("Updated Widget");
     }
 
@@ -112,12 +105,8 @@ public abstract class AbstractWidgetPatchTest {
     void testStatusReplaceAmount() throws Exception {
         var patchJson = Json.createPatchBuilder()
                 .test("/status", "NEW")
-                .replace("/amount", 99)
-                .build().toJsonArray().toString();
-        log.info("Patch: {}", patchJson);
-        doPatch(patchJson);
-        var after = widgetRepo.findById(saved.getId()).orElseThrow();
-        log.info("After:  id={} name={} amount={} status={}", after.getId(), after.getName(), after.getAmount(), after.getStatus());
+                .replace("/amount", 99);
+        var after = doPatchAndGet(patchJson);
         assertThat(after.getAmount()).isEqualTo(99);
     }
 
@@ -125,12 +114,8 @@ public abstract class AbstractWidgetPatchTest {
     void testAmountReplaceName() throws Exception {
         var patchJson = Json.createPatchBuilder()
                 .test("/amount", 42)
-                .replace("/name", "Updated Widget")
-                .build().toJsonArray().toString();
-        log.info("Patch: {}", patchJson);
-        doPatch(patchJson);
-        var after = widgetRepo.findById(saved.getId()).orElseThrow();
-        log.info("After:  id={} name={} amount={} status={}", after.getId(), after.getName(), after.getAmount(), after.getStatus());
+                .replace("/name", "Updated Widget");
+        var after = doPatchAndGet(patchJson);
         assertThat(after.getName()).isEqualTo("Updated Widget");
     }
 
@@ -138,12 +123,8 @@ public abstract class AbstractWidgetPatchTest {
     void testNameReplaceStatus() throws Exception {
         var patchJson = Json.createPatchBuilder()
                 .test("/name", "Widget One")
-                .replace("/status", "SUCCESS")
-                .build().toJsonArray().toString();
-        log.info("Patch: {}", patchJson);
-        doPatch(patchJson);
-        var after = widgetRepo.findById(saved.getId()).orElseThrow();
-        log.info("After:  id={} name={} amount={} status={}", after.getId(), after.getName(), after.getAmount(), after.getStatus());
+                .replace("/status", "SUCCESS");
+        var after = doPatchAndGet(patchJson);
         assertThat(after.getStatus()).isEqualTo(JobStatus.SUCCESS);
     }
 
@@ -153,12 +134,8 @@ public abstract class AbstractWidgetPatchTest {
     void testNameReplaceName() throws Exception {
         var patchJson = Json.createPatchBuilder()
                 .test("/name", "Widget One")
-                .replace("/name", "Updated Widget")
-                .build().toJsonArray().toString();
-        log.info("Patch: {}", patchJson);
-        doPatch(patchJson);
-        var after = widgetRepo.findById(saved.getId()).orElseThrow();
-        log.info("After:  id={} name={} amount={} status={}", after.getId(), after.getName(), after.getAmount(), after.getStatus());
+                .replace("/name", "Updated Widget");
+        var after = doPatchAndGet(patchJson);
         assertThat(after.getName()).isEqualTo("Updated Widget");
     }
 
@@ -166,12 +143,8 @@ public abstract class AbstractWidgetPatchTest {
     void testAmountReplaceAmount() throws Exception {
         var patchJson = Json.createPatchBuilder()
                 .test("/amount", 42)
-                .replace("/amount", 99)
-                .build().toJsonArray().toString();
-        log.info("Patch: {}", patchJson);
-        doPatch(patchJson);
-        var after = widgetRepo.findById(saved.getId()).orElseThrow();
-        log.info("After:  id={} name={} amount={} status={}", after.getId(), after.getName(), after.getAmount(), after.getStatus());
+                .replace("/amount", 99);
+        var after = doPatchAndGet(patchJson);
         assertThat(after.getAmount()).isEqualTo(99);
     }
 
@@ -180,16 +153,27 @@ public abstract class AbstractWidgetPatchTest {
     void testStatusReplaceStatus() throws Exception {
         var patchJson = Json.createPatchBuilder()
                 .test("/status", "NEW")
-                .replace("/status", "SUCCESS")
-                .build().toJsonArray().toString();
-        log.info("Patch: {}", patchJson);
-        doPatch(patchJson);
-        var after = widgetRepo.findById(saved.getId()).orElseThrow();
-        log.info("After:  id={} name={} amount={} status={}", after.getId(), after.getName(), after.getAmount(), after.getStatus());
+                .replace("/status", "SUCCESS");
+        var after = doPatchAndGet(patchJson);
         assertThat(after.getStatus()).isEqualTo(JobStatus.SUCCESS);
     }
 
     // ─────────────────────────────────────────────────────────────────────────
+
+    @NonNull
+    private Widget doPatchAndGet(JsonPatchBuilder patchJsonBuilder) throws Exception {
+        return doPatchAndGet(patchJsonBuilder.build().toJsonArray().toString());
+    }
+
+    @NonNull
+    private Widget doPatchAndGet(String patchJson) throws Exception {
+        log.info("Before: {}", objectMapper.writeValueAsString(saved));
+        log.info("Patch:  {}", patchJson);
+        doPatch(patchJson);
+        var after = widgetRepo.findById(saved.getId()).orElseThrow();
+        log.info("After:  {}", objectMapper.writeValueAsString(after));
+        return after;
+    }
 
     private void doPatch(String patchJson) throws Exception {
         String uri = "/widgets/" + saved.getId();
