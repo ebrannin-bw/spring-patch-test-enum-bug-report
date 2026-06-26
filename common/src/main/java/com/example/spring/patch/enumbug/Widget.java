@@ -26,8 +26,7 @@ public class Widget {
     @Column(columnDefinition = "varchar(255)")
     private JobStatus status;
 
-    @Override
-    public String toString() {
-        return "Widget{id=" + id + ", name='" + name + "', amount=" + amount + ", status=" + status + '}';
+    public String toJson() {
+        return String.format("{\"id\":%d,\"name\":\"%s\",\"amount\":%d,\"status\":\"%s\"}", id, name, amount, status);
     }
 }
